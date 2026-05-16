@@ -1,16 +1,21 @@
 #include<iostream>
 #include<thread>
+#include<mutex>
 using namespace std;
 
-void run()
-{
-    cout<<"Thread "<<id<<" is running in thread "<<endl;
+mutex mtx;
+void printNumbers(string threadName){
+    for(int i=1;i<=5;i++){
+        mtx.lock();
+        cout<<threadName<<" : "<<i<<endl;
+        mtx.unlock();
+    }
 }
-
-int main()
 {
-    thread t1(task,200);
+    thread t1(printNumbers,"Thread 1");
+    thread t2(printNumbers,"Thread 2");
     t1.join();
-    cout<<"Our execution completed"<<endl;
+    t2.join();
     return 0;
 }
+
